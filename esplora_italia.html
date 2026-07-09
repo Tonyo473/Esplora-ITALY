@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>Esplora l'Italia</title>
+<meta name="theme-color" content="#102b30">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Esplora l'Italia">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23102b30'/%3E%3Ctext x='50' y='68' font-size='55' text-anchor='middle' fill='%23e4a73b'%3E%F0%9F%87%AE%F0%9F%87%B9%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23102b30'/%3E%3Ctext x='50' y='68' font-size='55' text-anchor='middle' fill='%23e4a73b'%3E%F0%9F%87%AE%F0%9F%87%B9%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --notte: #102b30;
+    --notte-2: #16383f;
+    --carta: #f4ead2;
+    --terracotta: #c1502e;
+    --terracotta-2: #e0743f;
+    --oro: #e4a73b;
+    --oliva: #7a8f5c;
+    --testo-chiaro: #f4ead2;
+    --testo-fioco: #b9c9c4;
+    --ombra: rgba(0,0,0,0.35);
+  }
+
+  *{ box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html,body{
+    margin:0; padding:0;
+    background: var(--notte);
+    color: var(--testo-chiaro);
+    font-family: 'Manrope', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  body{
+    background-image:
+      radial-gradient(circle at 15% 0%, rgba(228,167,59,0.10), transparent 40%),
+      radial-gradient(circle at 85% 10%, rgba(193,80,46,0.12), transparent 45%);
+  }
+
+  .contenitore{
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 28px 20px 60px;
+  }
+
+  /* ---------- HEADER ---------- */
+  .eyebrow{
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--oro);
+    font-weight: 700;
+    margin: 0 0 6px 2px;
+  }
+
+  h1{
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 2.5rem;
+    line-height: 1.05;
+    margin: 0 0 10px 0;
+    color: var(--carta);
+  }
+
+  h1 em{
+    font-style: italic;
+    color: var(--terracotta-2);
+  }
+
+  .sottotitolo{
+    font-size: 0.95rem;
+    color: var(--testo-fioco);
+    line-height: 1.5;
+    margin: 0 0 26px 0;
+    max-width: 42ch;
+  }
+
+  /* ---------- SELETTORE CITTÀ ---------- */
+  .sezione-label{
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--testo-fioco);
+    font-weight: 700;
+    margin: 0 0 12px 2px;
+  }
+
+  /* ---------- BARRA DI RICERCA ---------- */
+  .barra-ricerca{
+    position: relative;
+    margin-bottom: 6px;
+  }
+
+  .campo-ricerca{
+    width: 100%;
+    background: var(--notte-2);
+    border: 1.5px solid rgba(244,234,210,0.14);
+    border-radius: 14px;
+    padding: 15px 46px 15px 16px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--carta);
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .campo-ricerca::placeholder{ color: var(--testo-fioco); font-weight: 500; }
+  .campo-ricerca:focus{
+    border-color: var(--oro);
+    box-shadow: 0 0 0 3px rgba(228,167,59,0.15);
+  }
+
+  .icona-ricerca{
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px; height: 18px;
+    border: 2px solid var(--testo-fioco);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .icona-ricerca::after{
+    content: '';
+    position: absolute;
+    width: 8px; height: 2px;
+    background: var(--testo-fioco);
+    bottom: -6px; right: -3px;
+    transform: rotate(45deg);
+  }
+
+  .stato-ricerca{
+    font-size: 0.76rem;
+    color: var(--testo-fioco);
+    margin: 8px 2px 0 2px;
+    min-height: 16px;
+  }
+  .stato-ricerca.errore{ color: var(--terracotta-2); }
+  .stato-ricerca.ok{ color: var(--oliva); }
+
+  .elenco-suggerimenti{
+    position: absolute;
+    left: 0; right: 0; top: calc(100% + 6px);
+    background: var(--notte-2);
+    border: 1px solid rgba(244,234,210,0.12);
+    border-radius: 14px;
+    max-height: 260px;
+    overflow-y: auto;
+    z-index: 20;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.4);
+    display: none;
+  }
+  .elenco-suggerimenti.visibile{ display: block; }
+
+  .suggerimento{
+    padding: 12px 16px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--testo-chiaro);
+    cursor: pointer;
+    border-bottom: 1px solid rgba(244,234,210,0.06);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+  .suggerimento:last-child{ border-bottom: none; }
+  .suggerimento:active,
+  .suggerimento.attivo{ background: rgba(228,167,59,0.12); }
+
+  .suggerimento .provincia{
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--oro);
+    white-space: nowrap;
+  }
+
+  /* ---------- SELETTORE REGIONE ---------- */
+  .barra-regione{
+    position: relative;
+  }
+
+  .campo-regione{
+    width: 100%;
+    background: var(--notte-2);
+    border: 1.5px solid rgba(244,234,210,0.14);
+    border-radius: 14px;
+    padding: 15px 46px 15px 16px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--carta);
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .campo-regione.disattivo{ color: var(--testo-fioco); opacity: 0.7; cursor: not-allowed; pointer-events: none; }
+  .campo-regione:focus{
+    outline: none;
+    border-color: var(--oro);
+    box-shadow: 0 0 0 3px rgba(228,167,59,0.15);
+  }
+
+  .icona-tendina{
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-65%) rotate(45deg);
+    width: 8px; height: 8px;
+    border-right: 2px solid var(--oro);
+    border-bottom: 2px solid var(--oro);
+    pointer-events: none;
+  }
+
+  .campo-ricerca:disabled{ opacity: 0.55; cursor: not-allowed; }
+
+  .senza-dati{
+    background: var(--notte-2);
+    border: 1px dashed rgba(244,234,210,0.18);
+    border-radius: 16px;
+    padding: 22px 18px;
+    margin-top: 14px;
+    font-size: 0.88rem;
+    color: var(--testo-fioco);
+    line-height: 1.55;
+  }
+  .senza-dati strong{ color: var(--carta); }
+
+  /* ---------- STATO VUOTO ---------- */
+  .stato-vuoto{
+    text-align: center;
+    padding: 50px 20px;
+    color: var(--testo-fioco);
+    font-size: 0.9rem;
+    border: 1px dashed rgba(244,234,210,0.15);
+    border-radius: 16px;
+    margin-top: 10px;
+  }
+
+  /* ---------- BLOCCO CITTÀ ATTIVA ---------- */
+  .blocco{ display:none; margin-top: 22px; animation: comparsa 0.35s ease; }
+  .blocco.visibile{ display:block; }
+
+  @keyframes comparsa{
+    from{ opacity:0; transform: translateY(6px); }
+    to{ opacity:1; transform: translateY(0); }
+  }
+
+  .titolo-blocco{
+    font-family: 'Fraunces', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--carta);
+    margin: 26px 0 4px 0;
+  }
+  .sotto-blocco{
+    font-size: 0.82rem;
+    color: var(--testo-fioco);
+    margin: 0 0 14px 0;
+  }
+
+  /* ---------- CARD ATTRAZIONE (accordion) ---------- */
+  .biglietto{
+    background: var(--notte-2);
+    border-radius: 14px;
+    border-left: 3px solid var(--oro);
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+
+  .biglietto-intestazione{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 15px 16px;
+    cursor: pointer;
+  }
+
+  .biglietto-numero{
+    font-family: 'Fraunces', serif;
+    font-size: 0.78rem;
+    color: var(--oro);
+    min-width: 22px;
+  }
+
+  .biglietto-nome{
+    font-weight: 700;
+    font-size: 0.98rem;
+    color: var(--carta);
+    flex: 1;
+  }
+
+  .biglietto-freccia{
+    color: var(--oro);
+    font-size: 1.1rem;
+    transition: transform 0.25s ease;
+    flex-shrink: 0;
+  }
+  .biglietto.aperto .biglietto-freccia{ transform: rotate(180deg); }
+
+  .biglietto-corpo{
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    padding: 0 16px;
+  }
+  .biglietto.aperto .biglietto-corpo{
+    max-height: 300px;
+    padding: 0 16px 18px 16px;
+  }
+
+  .biglietto-corpo p{
+    margin: 0;
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: var(--testo-fioco);
+    border-top: 1px solid rgba(244,234,210,0.08);
+    padding-top: 12px;
+  }
+
+  /* ---------- SEZIONE OGGI ---------- */
+  .oggi-card{
+    background: linear-gradient(155deg, rgba(122,143,92,0.14), rgba(122,143,92,0.03));
+    border: 1px solid rgba(122,143,92,0.3);
+    border-radius: 16px;
+    padding: 18px 18px 16px;
+    margin-top: 8px;
+  }
+
+  .oggi-data{
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--oliva);
+    font-weight: 700;
+    margin: 0 0 4px 0;
+  }
+
+  .oggi-titolo{
+    font-family: 'Fraunces', serif;
+    font-size: 1.15rem;
+    color: var(--carta);
+    margin: 0 0 12px 0;
+  }
+
+  .evento-riga{
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 9px 0;
+    border-top: 1px solid rgba(244,234,210,0.08);
+  }
+  .evento-riga:first-of-type{ border-top: none; }
+
+  .evento-pallino{
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--oliva);
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+
+  .evento-testo{ font-size: 0.87rem; color: var(--testo-chiaro); line-height: 1.45; }
+
+  .nessun-evento{
+    font-size: 0.85rem;
+    color: var(--testo-fioco);
+    line-height: 1.5;
+  }
+
+  footer{
+    text-align:center;
+    color: rgba(244,234,210,0.35);
+    font-size: 0.72rem;
+    margin-top: 40px;
+    letter-spacing: 0.05em;
+  }
+</style>
+</head>
+<body>
+
+<div class="contenitore">
+  <h1>Esplora <em>l'Italia</em></h1>
+
+  <p class="sezione-label">Regione</p>
+  <div class="barra-regione">
+    <div id="campo-regione" class="campo-regione disattivo" tabindex="0">Caricamento regioni...</div>
+    <span class="icona-tendina"></span>
+    <div class="elenco-suggerimenti" id="elenco-regioni"></div>
+  </div>
+
+  <p class="sezione-label" style="margin-top:18px;">Città o paese</p>
+  <div class="barra-ricerca">
+    <input
+      type="text"
+      id="campo-ricerca"
+      class="campo-ricerca"
+      placeholder="Prima scegli una regione"
+      autocomplete="off"
+      autocapitalize="words"
+      spellcheck="false"
+      disabled
+    />
+    <span class="icona-ricerca"></span>
+    <div class="elenco-suggerimenti" id="elenco-suggerimenti"></div>
+  </div>
+  <p class="stato-ricerca" id="stato-ricerca">Caricamento dell'elenco comuni italiani (ISTAT)...</p>
+
+  <div class="stato-vuoto" id="stato-vuoto">Scegli prima una regione, poi scrivi una città o un paese</div>
+
+  <div class="senza-dati" id="senza-dati" style="display:none;"></div>
+
+  <div class="blocco" id="blocco-attrazioni">
+
+    <div id="lista-attrazioni"></div>
+  </div>
+
+  <div class="blocco" id="blocco-oggi">
+    <div class="oggi-card">
+      <p class="oggi-data" id="oggi-data"></p>
+      <p class="oggi-titolo" id="oggi-titolo">Oggi in città</p>
+      <div id="lista-eventi"></div>
+    </div>
+  </div>
+
+  <footer>Dati dimostrativi — Italia</footer>
+</div>
+
+<script>
+// -------------------------------------------------------------------
+// DATI DI ESEMPIO (in futuro sostituibili con una vera API di eventi
+// e attrazioni: Wikivoyage, Google Places, Ticketmaster, ecc.)
+// -------------------------------------------------------------------
+const DATI = {
+  "Roma": {
+    iniziali: "RM",
+    attrazioni: [
+      { nome: "Colosseo", descrizione: "Il più grande anfiteatro mai costruito dall'Impero Romano, risalente al 70-80 d.C. Simbolo della città, ospitava combattimenti tra gladiatori e spettacoli pubblici." },
+      { nome: "Fontana di Trevi", descrizione: "La fontana barocca più famosa al mondo, completata nel 1762. Tradizione vuole che lanciare una moneta garantisca il ritorno a Roma." },
+      { nome: "Musei Vaticani e Cappella Sistina", descrizione: "Una delle collezioni d'arte più importanti al mondo, con il celebre soffitto affrescato da Michelangelo." },
+      { nome: "Pantheon", descrizione: "Antico tempio romano perfettamente conservato, famoso per la sua cupola con oculo centrale, ancora oggi record ingegneristico." },
+    ],
+  },
+  "Firenze": {
+    iniziali: "FI",
+    attrazioni: [
+      { nome: "Duomo di Firenze", descrizione: "Cattedrale di Santa Maria del Fiore, con la celebre cupola del Brunelleschi, capolavoro dell'ingegneria rinascimentale." },
+      { nome: "Galleria degli Uffizi", descrizione: "Uno dei musei d'arte più importanti al mondo, con opere di Botticelli, Leonardo da Vinci e Michelangelo." },
+      { nome: "Ponte Vecchio", descrizione: "Ponte medievale sul fiume Arno, famoso per le botteghe orafe che si affacciano su di esso." },
+    ],
+  },
+  "Venezia": {
+    iniziali: "VE",
+    attrazioni: [
+      { nome: "Piazza San Marco", descrizione: "Il salotto di Venezia, cuore della città con la Basilica di San Marco e il Palazzo Ducale." },
+      { nome: "Canal Grande", descrizione: "La via d'acqua principale della città, percorribile in gondola o vaporetto, fiancheggiata da palazzi storici." },
+      { nome: "Ponte di Rialto", descrizione: "Il ponte più antico sul Canal Grande, storico centro commerciale della città lagunare." },
+    ],
+  },
+  "Milano": {
+    iniziali: "MI",
+    attrazioni: [
+      { nome: "Duomo di Milano", descrizione: "Una delle cattedrali gotiche più grandi al mondo, con oltre 3.400 statue e guglie che dominano il centro città." },
+      { nome: "Galleria Vittorio Emanuele II", descrizione: "Elegante galleria commerciale ottocentesca con pavimento a mosaico e cupola in vetro e ferro." },
+      { nome: "Il Cenacolo di Leonardo", descrizione: "L'Ultima Cena di Leonardo da Vinci, custodita nel refettorio di Santa Maria delle Grazie." },
+    ],
+  },
+  "Napoli": {
+    iniziali: "NA",
+    attrazioni: [
+      { nome: "Centro storico di Napoli", descrizione: "Il centro storico più esteso d'Europa, patrimonio UNESCO, un intreccio di vicoli, chiese e vita quotidiana." },
+      { nome: "Castel dell'Ovo", descrizione: "Il castello più antico della città, su un isolotto affacciato sul golfo di Napoli." },
+      { nome: "Cappella Sansevero", descrizione: "Famosa per il Cristo velato, una delle sculture in marmo più stupefacenti al mondo." },
+    ],
+  },
+  "Bologna": {
+    iniziali: "BO",
+    attrazioni: [
+      { nome: "Le Due Torri", descrizione: "Torre degli Asinelli e Torre Garisenda, simbolo medievale della città, ancora oggi visitabili." },
+      { nome: "Piazza Maggiore", descrizione: "Il cuore della città, circondata dalla Basilica di San Petronio e dal Palazzo d'Accursio." },
+      { nome: "Portici di Bologna", descrizione: "Oltre 60 km di portici storici, patrimonio UNESCO, che coprono gran parte del centro." },
+    ],
+  },
+  "Torino": {
+    iniziali: "TO",
+    attrazioni: [
+      { nome: "Mole Antonelliana", descrizione: "Simbolo della città, oggi sede del Museo Nazionale del Cinema, con vista panoramica dalla cupola." },
+      { nome: "Piazza Castello", descrizione: "Il salotto barocco di Torino, con Palazzo Madama e Palazzo Reale." },
+      { nome: "Parco del Valentino", descrizione: "Grande parco sul Po con il celebre Borgo Medievale ricostruito per l'Esposizione del 1884." },
+    ],
+  },
+  "Genova": {
+    iniziali: "GE",
+    attrazioni: [
+      { nome: "Acquario di Genova", descrizione: "Uno degli acquari più grandi d'Europa, sul porto antico progettato da Renzo Piano." },
+      { nome: "Via Garibaldi", descrizione: "Strada patrimonio UNESCO fiancheggiata da palazzi nobiliari del Cinquecento, i celebri 'Rolli'." },
+      { nome: "Boccadasse", descrizione: "Antico borgo di pescatori diventato quartiere pittoresco affacciato sul mare." },
+    ],
+  },
+  "Verona": {
+    iniziali: "VR",
+    attrazioni: [
+      { nome: "Arena di Verona", descrizione: "Anfiteatro romano del I secolo, oggi celebre teatro all'aperto per l'opera lirica." },
+      { nome: "Casa di Giulietta", descrizione: "Casa trecentesca con il celebre balcone, legata alla tragedia shakespeariana." },
+      { nome: "Ponte Pietra", descrizione: "Ponte romano sull'Adige, più volte ricostruito, con vista su tutta la città vecchia." },
+    ],
+  },
+  "Palermo": {
+    iniziali: "PA",
+    attrazioni: [
+      { nome: "Cattedrale di Palermo", descrizione: "Duomo che mescola stili arabo-normanno, gotico e barocco, simbolo della storia multiculturale siciliana." },
+      { nome: "Mercato di Ballarò", descrizione: "Storico mercato popolare, tra i più antichi della città, cuore della vita e della cucina di strada." },
+      { nome: "Palazzo dei Normanni", descrizione: "Antica reggia normanna con la splendida Cappella Palatina decorata a mosaici bizantini." },
+    ],
+  },
+  "Bari": {
+    iniziali: "BA",
+    attrazioni: [
+      { nome: "Basilica di San Nicola", descrizione: "Basilica romanica che custodisce le reliquie di San Nicola, meta di pellegrinaggio anche ortodosso." },
+      { nome: "Bari Vecchia", descrizione: "Il centro storico a strapiombo sul mare, un labirinto di vicoli dove si stende ancora la pasta fatta in casa." },
+      { nome: "Castello Svevo", descrizione: "Fortezza normanno-sveva fatta ampliare da Federico II nel XIII secolo." },
+    ],
+  },
+  "Catania": {
+    iniziali: "CT",
+    attrazioni: [
+      { nome: "Piazza del Duomo e Fontana dell'Elefante", descrizione: "Cuore barocco della città, simbolo di Catania con l'elefante di lava scolpito nel Settecento." },
+      { nome: "Mercato della Pescheria", descrizione: "Mercato del pesce storico e vivace, esperienza autentica della vita catanese." },
+      { nome: "Etna", descrizione: "Il vulcano attivo più alto d'Europa, visibile e raggiungibile facilmente dalla città." },
+    ],
+  },
+  "Cagliari": {
+    iniziali: "CA",
+    attrazioni: [
+      { nome: "Bastione di Saint Remy", descrizione: "Imponente terrazza panoramica in stile liberty, punto d'incontro tra il centro storico e la città bassa." },
+      { nome: "Quartiere Castello", descrizione: "Il cuore medievale fortificato della città, con torri pisane e vicoli acciottolati." },
+      { nome: "Spiaggia del Poetto", descrizione: "Lunga spiaggia urbana di sabbia bianca, a pochi minuti dal centro città." },
+    ],
+  },
+  "Perugia": {
+    iniziali: "PG",
+    attrazioni: [
+      { nome: "Fontana Maggiore", descrizione: "Fontana medievale finemente scolpita, cuore di Piazza IV Novembre." },
+      { nome: "Rocca Paolina", descrizione: "Fortezza rinascimentale in parte sotterranea, oggi percorso pedonale e spazio espositivo." },
+      { nome: "Corso Vannucci", descrizione: "La passeggiata principale del centro storico, tra caffè storici e palazzi signorili." },
+    ],
+  },
+  "Siena": {
+    iniziali: "SI",
+    attrazioni: [
+      { nome: "Piazza del Campo", descrizione: "Una delle piazze medievali più belle d'Europa, sede del celebre Palio di Siena." },
+      { nome: "Duomo di Siena", descrizione: "Cattedrale gotica con facciata policroma e straordinario pavimento a intarsi marmorei." },
+      { nome: "Torre del Mangia", descrizione: "Torre campanaria alta oltre 87 metri, con vista panoramica sulla città e sulla campagna toscana." },
+    ],
+  },
+  "Pisa": {
+    iniziali: "PI",
+    attrazioni: [
+      { nome: "Torre di Pisa", descrizione: "La celebre torre pendente, campanile del Duomo, simbolo conosciuto in tutto il mondo." },
+      { nome: "Piazza dei Miracoli", descrizione: "Complesso monumentale patrimonio UNESCO con Duomo, Battistero, Torre e Camposanto." },
+      { nome: "Lungarni di Pisa", descrizione: "Le passeggiate lungo l'Arno, tra palazzi rinascimentali e la piccola Santa Maria della Spina." },
+    ],
+  },
+  "Lucca": {
+    iniziali: "LU",
+    attrazioni: [
+      { nome: "Mura di Lucca", descrizione: "Cinta muraria rinascimentale perfettamente conservata, oggi percorso pedonale e ciclabile panoramico." },
+      { nome: "Piazza dell'Anfiteatro", descrizione: "Piazza ovale costruita sulle fondamenta di un anfiteatro romano, unica nel suo genere." },
+      { nome: "Torre Guinigi", descrizione: "Torre medievale sormontata da un giardino pensile con alberi di leccio secolari." },
+    ],
+  },
+  "Assisi": {
+    iniziali: "AS",
+    attrazioni: [
+      { nome: "Basilica di San Francesco", descrizione: "Complesso basilicale patrimonio UNESCO con gli affreschi di Giotto sulla vita del santo." },
+      { nome: "Rocca Maggiore", descrizione: "Fortezza medievale sulla sommità della città, con vista sulla valle umbra." },
+      { nome: "Basilica di Santa Chiara", descrizione: "Chiesa gotica in pietra rosa e bianca che custodisce il celebre Crocifisso di San Damiano." },
+    ],
+  },
+  "Matera": {
+    iniziali: "MT",
+    attrazioni: [
+      { nome: "Sassi di Matera", descrizione: "Antico insediamento rupestre scavato nella roccia, patrimonio UNESCO e tra i luoghi abitati più antichi al mondo." },
+      { nome: "Cattedrale di Matera", descrizione: "Duomo romanico-pugliese che domina i Sassi dall'alto della Civita." },
+      { nome: "Chiese rupestri", descrizione: "Decine di chiese scavate nella roccia, decorate con affreschi bizantini." },
+    ],
+  },
+  "Taormina": {
+    iniziali: "ME",
+    attrazioni: [
+      { nome: "Teatro Antico di Taormina", descrizione: "Teatro greco-romano con vista spettacolare sull'Etna e sul mare, ancora oggi usato per spettacoli." },
+      { nome: "Corso Umberto", descrizione: "La via principale del borgo, tra boutique, terrazze panoramiche e palazzi medievali." },
+      { nome: "Isola Bella", descrizione: "Piccola isola collegata da una lingua di sabbia, riserva naturale con acque cristalline." },
+    ],
+  },
+  "Como": {
+    iniziali: "CO",
+    attrazioni: [
+      { nome: "Duomo di Como", descrizione: "Cattedrale gotico-rinascimentale sul lago, con una delle cupole più alte della Lombardia." },
+      { nome: "Lago di Como", descrizione: "Uno dei laghi più celebri al mondo, circondato da ville storiche e montagne." },
+      { nome: "Funicolare Como-Brunate", descrizione: "Storica funicolare che porta al belvedere di Brunate, con vista sulle Alpi e sul lago." },
+    ],
+  },
+  "Padova": {
+    iniziali: "PD",
+    attrazioni: [
+      { nome: "Cappella degli Scrovegni", descrizione: "Capolavoro di Giotto, uno dei cicli di affreschi più importanti della storia dell'arte." },
+      { nome: "Basilica di Sant'Antonio", descrizione: "Grande basilica di pellegrinaggio che custodisce le spoglie di Sant'Antonio da Padova." },
+      { nome: "Prato della Valle", descrizione: "Una delle piazze più grandi d'Europa, con canale ellittico e 78 statue." },
+    ],
+  },
+  "Trieste": {
+    iniziali: "TS",
+    attrazioni: [
+      { nome: "Piazza Unità d'Italia", descrizione: "La più grande piazza d'Europa affacciata sul mare, cuore elegante della città asburgica." },
+      { nome: "Castello di Miramare", descrizione: "Castello ottocentesco costruito per l'arciduca Massimiliano d'Asburgo, su un promontorio sul mare." },
+      { nome: "Canal Grande di Trieste", descrizione: "Canale navigabile nel cuore della città, circondato da caffè storici." },
+    ],
+  },
+  "Ravenna": {
+    iniziali: "RA",
+    attrazioni: [
+      { nome: "Basilica di San Vitale", descrizione: "Capolavoro bizantino patrimonio UNESCO, famoso per i mosaici dorati dell'imperatore Giustiniano." },
+      { nome: "Mausoleo di Galla Placidia", descrizione: "Piccolo edificio del V secolo con alcuni dei mosaici più antichi e suggestivi di Ravenna." },
+      { nome: "Tomba di Dante", descrizione: "Il sepolcro del sommo poeta, morto in esilio a Ravenna nel 1321." },
+    ],
+  },
+  "Mantova": {
+    iniziali: "MN",
+    attrazioni: [
+      { nome: "Palazzo Ducale", descrizione: "Reggia dei Gonzaga con centinaia di stanze e la celebre Camera degli Sposi affrescata da Mantegna." },
+      { nome: "Palazzo Te", descrizione: "Villa suburbana manierista decorata da Giulio Romano, capolavoro del Rinascimento." },
+      { nome: "Piazza delle Erbe", descrizione: "Piazza medievale nel cuore della città, circondata da portici e torri storiche." },
+    ],
+  },
+  "Parma": {
+    iniziali: "PR",
+    attrazioni: [
+      { nome: "Battistero di Parma", descrizione: "Battistero romanico-gotico in marmo rosa di Verona, capolavoro di Benedetto Antelami." },
+      { nome: "Duomo di Parma", descrizione: "Cattedrale romanica con la cupola affrescata dal Correggio, capolavoro prospettico." },
+      { nome: "Teatro Farnese", descrizione: "Teatro ligneo del Seicento all'interno del Palazzo della Pilotta, tra i più antichi al mondo." },
+    ],
+  },
+  "Lecce": {
+    iniziali: "LE",
+    attrazioni: [
+      { nome: "Basilica di Santa Croce", descrizione: "Capolavoro del barocco leccese, con una facciata riccamente scolpita nella pietra locale." },
+      { nome: "Anfiteatro Romano", descrizione: "Anfiteatro del II secolo scoperto nel cuore della città, nella centrale Piazza Sant'Oronzo." },
+      { nome: "Centro storico barocco", descrizione: "Un intreccio di chiese e palazzi in pietra leccese dorata, che ha valso a Lecce il nome di 'Firenze del Sud'." },
+    ],
+  },
+  "Alberobello": {
+    iniziali: "BA",
+    attrazioni: [
+      { nome: "Trulli di Alberobello", descrizione: "Caratteristiche costruzioni in pietra a secco con tetto conico, patrimonio UNESCO uniche al mondo." },
+      { nome: "Rione Monti", descrizione: "Il quartiere con la maggiore concentrazione di trulli, oggi pieno di botteghe artigiane." },
+      { nome: "Trullo Sovrano", descrizione: "L'unico trullo a due piani della città, oggi museo che racconta la vita rurale locale." },
+    ],
+  },
+  "Positano": {
+    iniziali: "SA",
+    attrazioni: [
+      { nome: "Spiaggia Grande", descrizione: "La spiaggia principale del borgo, sovrastata dalle case colorate a picco sul mare." },
+      { nome: "Chiesa di Santa Maria Assunta", descrizione: "Chiesa con la caratteristica cupola maiolicata, simbolo del paese." },
+      { nome: "Sentiero degli Dei", descrizione: "Uno dei percorsi panoramici più famosi d'Italia, lungo la costiera amalfitana." },
+    ],
+  },
+  "Amalfi": {
+    iniziali: "SA",
+    attrazioni: [
+      { nome: "Duomo di Amalfi", descrizione: "Cattedrale in stile arabo-normanno con una scalinata monumentale, simbolo della città." },
+      { nome: "Chiostro del Paradiso", descrizione: "Elegante chiostro duecentesco con archi intrecciati di gusto moresco." },
+      { nome: "Valle delle Ferriere", descrizione: "Riserva naturale con cascate e antiche cartiere, poco distante dal centro storico." },
+    ],
+  },
+  "Sorrento": {
+    iniziali: "NA",
+    attrazioni: [
+      { nome: "Piazza Tasso", descrizione: "Il salotto della città, punto di incontro tra il centro storico e le terrazze sul golfo." },
+      { nome: "Marina Grande", descrizione: "Antico borgo di pescatori con case colorate affacciate direttamente sul mare." },
+      { nome: "Villa Comunale", descrizione: "Giardino panoramico a picco sul golfo di Napoli, con vista sul Vesuvio." },
+    ],
+  },
+  "San Gimignano": {
+    iniziali: "SI",
+    attrazioni: [
+      { nome: "Torri di San Gimignano", descrizione: "Le celebri torri medievali in pietra che hanno valso al borgo il nome di 'Manhattan del Medioevo'." },
+      { nome: "Piazza della Cisterna", descrizione: "Piazza triangolare lastricata, cuore pulsante del borgo toscano." },
+      { nome: "Collegiata di San Gimignano", descrizione: "Chiesa romanica riccamente affrescata da artisti del Trecento e Quattrocento senese." },
+    ],
+  },
+  "Orvieto": {
+    iniziali: "TR",
+    attrazioni: [
+      { nome: "Duomo di Orvieto", descrizione: "Cattedrale gotica con una facciata dorata a mosaici, tra le più spettacolari d'Italia." },
+      { nome: "Pozzo di San Patrizio", descrizione: "Pozzo rinascimentale a doppia rampa elicoidale, scavato nel tufo per 62 metri di profondità." },
+      { nome: "Orvieto sotterranea", descrizione: "Rete di grotte e cunicoli scavati nel tufo sotto la città, visitabili con percorsi guidati." },
+    ],
+  },
+  "Cortina d'Ampezzo": {
+    iniziali: "BL",
+    attrazioni: [
+      { nome: "Tre Cime di Lavaredo", descrizione: "Simbolo delle Dolomiti, patrimonio UNESCO, raggiungibili con escursioni panoramiche." },
+      { nome: "Corso Italia", descrizione: "La via pedonale del centro, tra boutique eleganti e vista sulle montagne circostanti." },
+      { nome: "Lago di Sorapis", descrizione: "Lago alpino dalle acque turchesi, meta di una delle escursioni più fotografate delle Dolomiti." },
+    ],
+  },
+  "Portofino": {
+    iniziali: "GE",
+    attrazioni: [
+      { nome: "Piazzetta di Portofino", descrizione: "Il piccolo porto con le case colorate, simbolo mondiale dell'eleganza ligure." },
+      { nome: "Castello Brown", descrizione: "Fortezza cinquecentesca con giardini e vista panoramica sul golfo del Tigullio." },
+      { nome: "San Fruttuoso", descrizione: "Baia raggiungibile solo via mare o sentiero, con l'antica abbazia sulla spiaggia." },
+    ],
+  },
+};
+
+// Eventi di esempio: chiave "Città|MM-GG"
+const EVENTI = {
+  "Roma|07-09": ["Concerto jazz all'aperto a Villa Ada", "Mercatino serale a Trastevere"],
+  "Firenze|07-09": ["Festa di quartiere in Oltrarno"],
+  "Milano|07-09": ["Aperitivo con musica dal vivo ai Navigli"],
+  "Bologna|07-14": ["Festa d'estate in Piazza Maggiore"],
+  "Verona|07-09": ["Opera lirica serale in Arena"],
+  "Siena|07-02": ["Corteo storico e Palio di Siena"],
+  "Genova|07-09": ["Musica dal vivo nel porto antico"],
+  "Taormina|07-09": ["Spettacolo estivo al Teatro Antico"],
+};
+
+// -------------------------------------------------------------------
+// LOGICA
+// -------------------------------------------------------------------
+const statoVuoto = document.getElementById('stato-vuoto');
+const bloccoAttrazioni = document.getElementById('blocco-attrazioni');
+const bloccoOggi = document.getElementById('blocco-oggi');
+const listaAttrazioniEl = document.getElementById('lista-attrazioni');
+const listaEventi = document.getElementById('lista-eventi');
+const oggiData = document.getElementById('oggi-data');
+const oggiTitolo = document.getElementById('oggi-titolo');
+const campoRicerca = document.getElementById('campo-ricerca');
+const elencoSuggerimenti = document.getElementById('elenco-suggerimenti');
+const statoRicerca = document.getElementById('stato-ricerca');
+const senzaDati = document.getElementById('senza-dati');
+const campoRegione = document.getElementById('campo-regione');
+const elencoRegioni = document.getElementById('elenco-regioni');
+
+const oggi = new Date();
+const giorniSettimana = ["domenica","lunedì","martedì","mercoledì","giovedì","venerdì","sabato"];
+const meseNomi = ["gennaio","febbraio","marzo","aprile","maggio","giugno","luglio","agosto","settembre","ottobre","novembre","dicembre"];
+const dataLeggibile = `${giorniSettimana[oggi.getDay()]} ${oggi.getDate()} ${meseNomi[oggi.getMonth()]}`;
+const chiaveData = `${String(oggi.getMonth()+1).padStart(2,'0')}-${String(oggi.getDate()).padStart(2,'0')}`;
+
+function normalizza(testo){
+  return testo.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
+// ---------------------------------------------------------------
+// CARICAMENTO ELENCO UFFICIALE DI TUTTI I COMUNI ITALIANI (ISTAT)
+// Fonte: dataset pubblico "comuni-json" (7.904 comuni, aggiornato),
+// da cui ricaviamo anche l'elenco delle 20 regioni per il primo filtro.
+// ---------------------------------------------------------------
+let comuni = [];          // [{nome, provincia, regione}]
+let comuniPronti = false;
+let elencoRidotto = false; // true se usiamo la lista di riserva più corta
+let regioneSelezionata = "";
+
+const URL_COMUNI = "https://raw.githubusercontent.com/matteocontrini/comuni-json/master/comuni.json";
+
+// piccola lista di riserva usata solo se il caricamento online fallisce
+// (es. nessuna connessione internet) — qui manca il dato regione,
+// quindi in questo caso il selettore regione viene disattivato.
+const COMUNI_RISERVA = [
+  "Roma","Milano","Napoli","Torino","Palermo","Genova","Bologna","Firenze",
+  "Bari","Catania","Venezia","Verona","Messina","Padova","Trieste","Brescia",
+  "Taranto","Prato","Parma","Modena","Reggio Calabria","Reggio Emilia","Perugia",
+  "Livorno","Ravenna","Cagliari","Foggia","Rimini","Salerno","Ferrara","Sassari",
+  "Latina","Giugliano in Campania","Monza","Siracusa","Pescara","Bergamo","Forlì",
+  "Trento","Vicenza","Terni","Bolzano","Novara","Piacenza","Ancona","Andria",
+  "Arezzo","Udine","Cesena","Lecce","Pesaro","La Spezia","Alessandria","Barletta",
+  "Catanzaro","Pistoia","Como","Guidonia Montecelio","Pisa","Lucca","Brindisi",
+  "Torre del Greco","Treviso","Grosseto","Busto Arsizio","Sesto San Giovanni",
+  "Orvieto","Positano","Alba","Assisi","Matera","Cortina d'Ampezzo","Portofino",
+  "Sorrento","Amalfi","Siena","San Gimignano","Cinque Terre","Taormina","Otranto",
+  "Ostuni","Polignano a Mare","Tropea","Alberobello","Ravello","Vernazza",
+];
+
+fetch(URL_COMUNI)
+  .then(risposta => {
+    if (!risposta.ok) throw new Error("risposta non valida");
+    return risposta.json();
+  })
+  .then(dati => {
+    comuni = dati.map(c => ({
+      nome: c.nome,
+      provincia: (c.provincia && c.provincia.nome) ? c.provincia.nome : "",
+      regione: (c.regione && c.regione.nome) ? c.regione.nome : ""
+    }));
+    comuniPronti = true;
+    popolaRegioni();
+    statoRicerca.textContent = `Elenco caricato: ${comuni.length} comuni italiani pronti alla ricerca.`;
+    statoRicerca.className = 'stato-ricerca ok';
+  })
+  .catch(() => {
+    // riserva usata quando il download fallisce — spesso NON è mancanza
+    // di internet, ma il browser che blocca le richieste esterne quando
+    // la pagina è aperta come file locale (protocollo file://).
+    comuni = COMUNI_RISERVA.map(nome => ({ nome, provincia: "", regione: "" }));
+    comuniPronti = true;
+    elencoRidotto = true;
+    regioneSelezionata = "TUTTE"; // niente filtro per regione in questa modalità
+    abilitaRicerca("Es. Roma, Orvieto, Positano...");
+
+    if (location.protocol === 'file:'){
+      campoRegione.textContent = "Non disponibile (file aperto localmente)";
+      campoRegione.classList.add('disattivo');
+      statoRicerca.textContent = "Stai aprendo il file direttamente dal telefono: il browser blocca le richieste a internet in questa modalità, anche se sei online. Uso una lista ridotta di città. Per la ricerca completa, il file va aperto da un indirizzo web (non da file locale) — chiedimi come.";
+    } else {
+      campoRegione.textContent = "Elenco non disponibile";
+      campoRegione.classList.add('disattivo');
+      statoRicerca.textContent = "Non sono riuscito a scaricare l'elenco completo (controlla la connessione). Uso una lista ridotta di città, senza filtro per regione.";
+    }
+    statoRicerca.className = 'stato-ricerca errore';
+  });
+
+// ---------------------------------------------------------------
+// SELETTORE REGIONE (menu personalizzato, non un <select> nativo:
+// più affidabile al tocco su alcuni browser/webview Android)
+// ---------------------------------------------------------------
+function popolaRegioni(){
+  const regioni = [...new Set(comuni.map(c => c.regione).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'it'));
+
+  elencoRegioni.innerHTML = '';
+  regioni.forEach(r => {
+    const voce = document.createElement('div');
+    voce.className = 'suggerimento';
+    voce.textContent = r;
+    voce.addEventListener('click', () => impostaRegione(r));
+    elencoRegioni.appendChild(voce);
+  });
+
+  campoRegione.textContent = "Scegli una regione...";
+  campoRegione.classList.remove('disattivo');
+}
+
+campoRegione.addEventListener('click', () => {
+  if (campoRegione.classList.contains('disattivo')) return;
+  elencoRegioni.classList.toggle('visibile');
+});
+
+document.addEventListener('click', (evento) => {
+  if (!evento.target.closest('.barra-regione')){
+    elencoRegioni.classList.remove('visibile');
+  }
+});
+
+function impostaRegione(nomeRegione){
+  regioneSelezionata = nomeRegione;
+  campoRegione.textContent = nomeRegione;
+  elencoRegioni.classList.remove('visibile');
+
+  campoRicerca.value = '';
+  elencoSuggerimenti.classList.remove('visibile');
+  senzaDati.style.display = 'none';
+  bloccoAttrazioni.classList.remove('visibile');
+  bloccoOggi.classList.remove('visibile');
+
+  abilitaRicerca(`Cerca in ${regioneSelezionata}...`);
+  statoVuoto.style.display = 'block';
+  statoVuoto.textContent = `Scrivi il nome di una città o un paese in ${regioneSelezionata}`;
+  statoRicerca.textContent = '';
+  statoRicerca.className = 'stato-ricerca';
+}
+
+function abilitaRicerca(placeholder){
+  campoRicerca.disabled = false;
+  campoRicerca.placeholder = placeholder;
+}
+
+// comuni da usare per la ricerca corrente, filtrati per regione se necessario
+function comuniFiltrati(){
+  if (regioneSelezionata === "TUTTE" || !regioneSelezionata){
+    return comuni;
+  }
+  return comuni.filter(c => c.regione === regioneSelezionata);
+}
+
+
+// ---------------------------------------------------------------
+// AUTOCOMPLETAMENTO
+// ---------------------------------------------------------------
+campoRicerca.addEventListener('input', () => {
+  const valore = campoRicerca.value.trim();
+  senzaDati.style.display = 'none';
+
+  if (!comuniPronti || valore.length < 2){
+    elencoSuggerimenti.classList.remove('visibile');
+    return;
+  }
+
+  const chiave = normalizza(valore);
+  const corrispondenze = comuniFiltrati()
+    .filter(c => normalizza(c.nome).includes(chiave))
+    .sort((a, b) => normalizza(a.nome).indexOf(chiave) - normalizza(b.nome).indexOf(chiave))
+    .slice(0, 8);
+
+  if (corrispondenze.length === 0){
+    elencoSuggerimenti.classList.remove('visibile');
+    return;
+  }
+
+  elencoSuggerimenti.innerHTML = '';
+  corrispondenze.forEach(c => {
+    const voce = document.createElement('div');
+    voce.className = 'suggerimento';
+    voce.innerHTML = `<span>${c.nome}</span>${c.provincia ? `<span class="provincia">${c.provincia}</span>` : ''}`;
+    voce.addEventListener('click', () => {
+      campoRicerca.value = c.nome;
+      elencoSuggerimenti.classList.remove('visibile');
+      elaboraComune(c.nome);
+    });
+    elencoSuggerimenti.appendChild(voce);
+  });
+  elencoSuggerimenti.classList.add('visibile');
+});
+
+campoRicerca.addEventListener('keydown', (evento) => {
+  if (evento.key === 'Enter'){
+    evento.preventDefault();
+    elencoSuggerimenti.classList.remove('visibile');
+    verificaEProcessa(campoRicerca.value.trim());
+  }
+});
+
+campoRicerca.addEventListener('blur', () => {
+  setTimeout(() => elencoSuggerimenti.classList.remove('visibile'), 150);
+});
+
+document.addEventListener('click', (evento) => {
+  if (!evento.target.closest('.barra-ricerca')){
+    elencoSuggerimenti.classList.remove('visibile');
+  }
+});
+
+// ---------------------------------------------------------------
+// VALIDAZIONE: il dato scritto corrisponde a un comune reale
+// della regione selezionata?
+// ---------------------------------------------------------------
+function verificaEProcessa(valore){
+  if (!valore){ return; }
+
+  if (!regioneSelezionata){
+    statoRicerca.textContent = "Scegli prima una regione.";
+    statoRicerca.className = 'stato-ricerca errore';
+    return;
+  }
+
+  if (!comuniPronti){
+    statoRicerca.textContent = "Sto ancora caricando l'elenco comuni, riprova tra un istante.";
+    statoRicerca.className = 'stato-ricerca errore';
+    return;
+  }
+
+  const chiave = normalizza(valore);
+  const trovato = comuniFiltrati().find(c => normalizza(c.nome) === chiave);
+
+  if (!trovato){
+    const ambitoMessaggio = regioneSelezionata === "TUTTE" ? "" : ` in ${regioneSelezionata}`;
+    statoRicerca.textContent = `"${valore}" non risulta un comune valido${ambitoMessaggio}. Controlla lo scritto.`;
+    statoRicerca.className = 'stato-ricerca errore';
+    bloccoAttrazioni.classList.remove('visibile');
+    bloccoOggi.classList.remove('visibile');
+    senzaDati.style.display = 'none';
+    statoVuoto.style.display = 'block';
+    return;
+  }
+
+  statoRicerca.textContent = elencoRidotto
+    ? `Comune riconosciuto (lista ridotta): ${trovato.nome}.`
+    : `Comune riconosciuto: ${trovato.nome}${trovato.provincia ? ' (' + trovato.provincia + ')' : ''}.`;
+  statoRicerca.className = 'stato-ricerca ok';
+  elaboraComune(trovato.nome);
+}
+
+// ---------------------------------------------------------------
+// RICERCA IN TEMPO REALE CON L'API GRATUITA DI WIKIPEDIA (per i
+// comuni senza scheda scritta a mano). Nessuna chiave richiesta:
+// l'API pubblica di Wikimedia supporta le richieste dal browser
+// tramite il parametro origin=*.
+//
+// Come funziona:
+// 1) troviamo le coordinate geografiche della pagina Wikipedia del
+//    comune (action=query, prop=coordinates)
+// 2) cerchiamo le pagine Wikipedia più vicine a quel punto
+//    (list=geosearch) — sono in genere monumenti, chiese, musei,
+//    piazze storiche ecc.
+// 3) prendiamo un breve estratto testuale pulito per ciascuna
+//    (prop=extracts, senza markup da ripulire a mano)
+// ---------------------------------------------------------------
+const cacheAttrazioni = {}; // evita di richiedere due volte lo stesso comune
+
+async function cercaConWikipedia(nomeComune){
+  try {
+    // 1) coordinate della pagina del comune
+    const urlCoord = `https://it.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(nomeComune)}&prop=coordinates&format=json&origin=*`;
+    const rispostaCoord = await fetch(urlCoord);
+    const datiCoord = await rispostaCoord.json();
+    const pagine = datiCoord.query && datiCoord.query.pages;
+    if (!pagine) return null;
+
+    const pagina = Object.values(pagine)[0];
+    if (!pagina || pagina.missing !== undefined || !pagina.coordinates || !pagina.coordinates.length){
+      return null;
+    }
+    const { lat, lon } = pagina.coordinates[0];
+
+    // 2) punti di interesse nel raggio di ~9 km dal centro del comune
+    const urlVicini = `https://it.wikipedia.org/w/api.php?action=query&list=geosearch&gscoord=${lat}|${lon}&gsradius=9000&gslimit=20&format=json&origin=*`;
+    const rispostaVicini = await fetch(urlVicini);
+    const datiVicini = await rispostaVicini.json();
+    const risultati = (datiVicini.query && datiVicini.query.geosearch) || [];
+    if (!risultati.length) return null;
+
+    const candidati = risultati
+      .filter(r => normalizza(r.title) !== normalizza(nomeComune))
+      .slice(0, 10);
+    if (!candidati.length) return null;
+
+    // 3) estratto testuale pulito per ciascun candidato (già senza markup)
+    const idPagine = candidati.map(c => c.pageid).join('|');
+    const urlEstratti = `https://it.wikipedia.org/w/api.php?action=query&prop=extracts&exintro=1&explaintext=1&exsentences=2&pageids=${idPagine}&format=json&origin=*`;
+    const rispostaEstratti = await fetch(urlEstratti);
+    const datiEstratti = await rispostaEstratti.json();
+    const paginePerId = (datiEstratti.query && datiEstratti.query.pages) || {};
+
+    const attrazioni = candidati
+      .map(c => {
+        const info = paginePerId[c.pageid];
+        const estratto = (info && info.extract) ? info.extract.trim() : '';
+        return { nome: c.title, descrizione: estratto };
+      })
+      // scarta pagine senza estratto o che sono a loro volta altri comuni/frazioni
+      // (poco utili come "cosa vedere", sono luoghi non attrazioni)
+      .filter(a => a.descrizione && !/\bè\s+(un|una)\s+(comune|frazione|localit[àa])\b/i.test(a.descrizione))
+      .slice(0, 3);
+
+    return attrazioni.length ? attrazioni : null;
+  } catch (errore) {
+    return null;
+  }
+}
+
+// ---------------------------------------------------------------
+// UNA VOLTA VALIDATO IL COMUNE: usa la scheda scritta a mano se
+// esiste, altrimenti cerca in tempo reale con l'API di Wikipedia.
+// ---------------------------------------------------------------
+async function elaboraComune(nomeComune){
+  statoVuoto.style.display = 'none';
+  senzaDati.style.display = 'none';
+
+  const nomeChiave = Object.keys(DATI).find(k => normalizza(k) === normalizza(nomeComune));
+
+  if (nomeChiave){
+    mostraRisultato(nomeChiave, DATI[nomeChiave].attrazioni.slice(0, 3), true);
+    return;
+  }
+
+  bloccoAttrazioni.classList.remove('visibile');
+  bloccoOggi.classList.remove('visibile');
+  senzaDati.style.display = 'block';
+  senzaDati.innerHTML = `Sto cercando informazioni su <strong>${nomeComune}</strong>...`;
+
+  const chiaveCache = normalizza(nomeComune);
+  let attrazioniTrovate = cacheAttrazioni[chiaveCache];
+  if (attrazioniTrovate === undefined){
+    attrazioniTrovate = await cercaConWikipedia(nomeComune);
+    cacheAttrazioni[chiaveCache] = attrazioniTrovate;
+  }
+
+  if (attrazioniTrovate && attrazioniTrovate.length){
+    senzaDati.style.display = 'none';
+    mostraRisultato(nomeComune, attrazioniTrovate, false);
+  } else {
+    senzaDati.innerHTML = `Non ho trovato informazioni turistiche su <strong>${nomeComune}</strong>. Potrebbe essere un paese molto piccolo o senza pagine dedicate nelle vicinanze.`;
+  }
+}
+
+function mostraRisultato(nomeCitta, elencoAttrazioni, curata){
+  bloccoAttrazioni.classList.add('visibile');
+
+  listaAttrazioniEl.innerHTML = '';
+  elencoAttrazioni.forEach((attrazione, indice) => {
+    const biglietto = document.createElement('div');
+    biglietto.className = 'biglietto';
+    biglietto.innerHTML = `
+      <div class="biglietto-intestazione">
+        <span class="biglietto-numero">${String(indice+1).padStart(2,'0')}</span>
+        <span class="biglietto-nome">${attrazione.nome}</span>
+        <span class="biglietto-freccia">⌄</span>
+      </div>
+      <div class="biglietto-corpo"><p>${attrazione.descrizione}</p></div>
+    `;
+    biglietto.querySelector('.biglietto-intestazione').addEventListener('click', () => {
+      biglietto.classList.toggle('aperto');
+    });
+    listaAttrazioniEl.appendChild(biglietto);
+  });
+
+  if (!curata){
+    const nota = document.createElement('p');
+    nota.className = 'sotto-blocco';
+    nota.style.marginTop = '10px';
+    nota.textContent = 'Fonte: Wikipedia — luoghi trovati automaticamente vicino al comune, potrebbero includere qualche imprecisione.';
+    listaAttrazioniEl.appendChild(nota);
+  }
+
+  bloccoOggi.classList.add('visibile');
+  oggiData.textContent = dataLeggibile;
+  oggiTitolo.textContent = `Oggi a ${nomeCitta}`;
+  listaEventi.innerHTML = '';
+  const eventiOggi = EVENTI[`${nomeCitta}|${chiaveData}`];
+  if (eventiOggi && eventiOggi.length){
+    eventiOggi.forEach(evento => {
+      const riga = document.createElement('div');
+      riga.className = 'evento-riga';
+      riga.innerHTML = `<span class="evento-pallino"></span><span class="evento-testo">${evento}</span>`;
+      listaEventi.appendChild(riga);
+    });
+  } else if (curata){
+    listaEventi.innerHTML = `<p class="nessun-evento">Nessun evento speciale segnalato per oggi in questa città.</p>`;
+  } else {
+    listaEventi.innerHTML = `<p class="nessun-evento">Dati sugli eventi non disponibili per questo comune.</p>`;
+  }
+}
+</script>
+</body>
+</html>
